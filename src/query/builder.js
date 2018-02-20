@@ -5,6 +5,7 @@ import assert from 'assert';
 import inherits from 'inherits';
 import { EventEmitter } from 'events';
 
+import { getLogger } from '../logger';
 import Raw from '../raw';
 import * as helpers from '../helpers';
 import JoinClause from './joinclause';
@@ -706,7 +707,7 @@ assign(Builder.prototype, {
   limit(value) {
     const val = parseInt(value, 10)
     if (isNaN(val)) {
-      helpers.warn('A valid integer must be provided to limit')
+      getLogger().warn('A valid integer must be provided to limit')
     } else {
       this._single.limit = val;
     }
@@ -825,7 +826,7 @@ assign(Builder.prototype, {
     } else {
       const keys = Object.keys(values);
       if (this._single.update) {
-        helpers.warn('Update called multiple times with objects.')
+        getLogger().warn('Update called multiple times with objects.')
       }
       let i = -1;
       while (++i < keys.length) {
@@ -887,7 +888,7 @@ assign(Builder.prototype, {
   fromJS(obj) {
     each(obj, (val, key) => {
       if (typeof this[key] !== 'function') {
-        helpers.warn(`Knex Error: unknown key ${key}`)
+        getLogger().warn(`Knex Error: unknown key ${key}`)
       }
       if (Array.isArray(val)) {
         this[key].apply(this, val)

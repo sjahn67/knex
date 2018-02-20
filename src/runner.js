@@ -1,6 +1,6 @@
 import { assign, isArray } from 'lodash'
 import Promise from 'bluebird';
-import * as helpers from './helpers';
+import { getLogger } from './logger';
 
 let PassThrough;
 
@@ -32,7 +32,7 @@ assign(Runner.prototype, {
       const sql = runner.builder.toSQL();
 
       if (runner.builder._debug) {
-        helpers.debugLog(sql)
+        getLogger().log(sql)
       }
 
       if (isArray(sql)) {

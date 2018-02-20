@@ -4,9 +4,9 @@
 // -------
 import inherits from 'inherits';
 import TableCompiler from '../../../schema/tablecompiler';
-import * as helpers from '../../../helpers';
-import Promise from 'bluebird';
+import { getLogger } from '../../../logger';
 
+import Promise from 'bluebird';
 import { assign } from 'lodash'
 
 // Table Compiler
@@ -41,7 +41,7 @@ assign(TableCompiler_MySQL.prototype, {
 
     if (this.single.comment) {
       const comment = (this.single.comment || '');
-      if (comment.length > 60) helpers.warn('The max length for a table comment is 60 characters');
+      if (comment.length > 60) getLogger().warn('The max length for a table comment is 60 characters');
       sql += ` comment = '${comment}'`;
     }
 

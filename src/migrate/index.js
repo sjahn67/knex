@@ -4,7 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
 import Promise from 'bluebird';
-import * as helpers from '../helpers';
+import { getLogger } from '../logger';
+
 import {
   assign, bind, difference, each, filter, get, includes, isBoolean,
   isEmpty, isUndefined, map, max, template
@@ -231,17 +232,17 @@ export default class Migrator {
 
         if (error instanceof LockError) {
           // If locking error do not free the lock.
-          helpers.warn(`Can't take lock to run migrations: ${error.message}`);
-          helpers.warn(
+          getLogger().warn(`Can't take lock to run migrations: ${error.message}`);
+          getLogger().warn(
             'If you are sure migrations are not running you can release the ' +
             'lock manually by deleting all the rows from migrations lock ' +
             'table: ' + this._getLockTableName()
           );
         } else {
           if (this._activeMigration.fileName) {
-            helpers.warn(`migration file "${this._activeMigration.fileName}" failed`)
+            getLogger().warn(`migration file "${this._activeMigration.fileName}" failed`)
           }
-          helpers.warn(`migration failed with error: ${error.message}`)
+          getLogger().warn(`migration failed with error: ${error.message}`)
           // If the error was not due to a locking issue, then remove the lock.
           cleanupReady = this._freeLock(trx);
         }
@@ -402,7 +403,7 @@ function validateMigrationList(migrations) {
 
 function warnPromise(value, name, fn) {
   if (!value || typeof value.then !== 'function') {
-    helpers.warn(`migration ${name} did not return a promise`);
+    getLogger().warn(`migration ${name} did not return a promise`);
     if (fn && typeof fn === 'function') fn()
   }
   return value;

@@ -5,7 +5,7 @@
 import { assign, isPlainObject, isEmpty, isString, map, reduce, compact, identity } from 'lodash'
 import inherits from 'inherits';
 import QueryCompiler from '../../../query/compiler';
-import * as helpers from '../../../helpers';
+import { getLogger } from '../../../logger';
 import { ReturningHelper } from '../utils';
 
 const components = [
@@ -139,7 +139,7 @@ assign(QueryCompiler_Oracle.prototype, {
   forShare() {
     // lock for share is not directly supported by oracle
     // use LOCK TABLE .. IN SHARE MODE; instead
-    helpers.warn('lock for share is not supported by oracle dialect');
+    getLogger().warn('lock for share is not supported by oracle dialect');
     return '';
   },
 

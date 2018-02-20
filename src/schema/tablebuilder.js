@@ -9,6 +9,7 @@
 // ------
 import { extend, each, toArray, isString, isFunction } from 'lodash'
 import * as helpers from '../helpers';
+import { getLogger } from '../logger';
 
 function TableBuilder(client, method, tableName, fn) {
   this.client = client
@@ -72,10 +73,10 @@ each(specialMethods, function(methods, dialect) {
   each(methods, function(method) {
     TableBuilder.prototype[method] = function(value) {
       if (this.client.dialect !== dialect) {
-        helpers.warn(`Knex only supports ${method} statement with ${dialect}.`);
+        getLogger().warn(`Knex only supports ${method} statement with ${dialect}.`);
       }
       if (this._method === 'alter') {
-        helpers.warn(
+        getLogger().warn(
           `Knex does not support altering the ${method} outside of create ` +
           `table, please use knex.raw statement.`
         );

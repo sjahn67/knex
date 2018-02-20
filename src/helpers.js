@@ -11,6 +11,7 @@ import {
   isTypedArray
 } from 'lodash'
 import chalk from 'chalk';
+import { getLogger } from './logger';
 
 // Pick off the attributes from only the current layer of the object.
 export function skim(data) {
@@ -30,22 +31,9 @@ export function normalizeArr() {
   return args;
 }
 
-export function debugLog(msg) {
-  console.log(msg);
-}
-
-export function error(msg) {
-  console.log(chalk.red(`Knex:Error ${msg}`))
-}
-
-  // Used to signify deprecated functionality.
+// Used to signify deprecated functionality.
 export function deprecate(method, alternate) {
-  warn(`${method} is deprecated, please use ${alternate}`);
-}
-
-  // Used to warn about incorrect use, without error'ing
-export function warn(msg) {
-  console.log(chalk.yellow(`Knex:warning - ${msg}`))
+  getLogger().warn(`${method} is deprecated, please use ${alternate}`);
 }
 
 export function exit(msg) {

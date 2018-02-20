@@ -1,8 +1,8 @@
 "use strict";
 
 import inherits from 'inherits';
-import { warn } from '../../../helpers';
 import ColumnBuilder from '../../../schema/columnbuilder';
+import { getLogger } from '../../../logger';
 
 function ColumnBuilder_Redshift() {
   ColumnBuilder.apply(this, arguments);
@@ -16,7 +16,7 @@ ColumnBuilder_Redshift.prototype.primary = function () {
 };
 
 ColumnBuilder_Redshift.prototype.index = function () {
-  warn('Redshift does not support the creation of indexes.');
+  getLogger().warn('Redshift does not support the creation of indexes.');
   return this;
 }
 

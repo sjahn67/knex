@@ -1,6 +1,6 @@
 import inherits from 'inherits';
 import TableCompiler from '../../../schema/tablecompiler';
-import * as helpers from '../../../helpers';
+import { getLogger } from '../../../logger';
 
 import { filter } from 'lodash'
 
@@ -76,7 +76,7 @@ TableCompiler_SQLite3.prototype.index = function(columns, indexName) {
 TableCompiler_SQLite3.prototype.primary =
 TableCompiler_SQLite3.prototype.foreign = function() {
   if (this.method !== 'create' && this.method !== 'createIfNot') {
-    helpers.warn('SQLite3 Foreign & Primary keys may only be added on create');
+    getLogger().warn('SQLite3 Foreign & Primary keys may only be added on create');
   }
 };
 

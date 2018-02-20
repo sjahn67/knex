@@ -75,3 +75,15 @@ test('it should throw error if client is omitted in config', function(t) {
     t.deepEqual(error.message, 'knex: Required configuration option \'client\' is missing.');
   }
 })
+
+test('it should allow setting logger', function() {
+  const logger = knex.getLogger();
+  const newLog = {
+    error() {},
+    warn() {},
+    info() {},
+  };
+  knex.setLogger(newLog);
+  t.ok(knex.getLogger() === newLog)
+  knex.setLogger(logger);
+})

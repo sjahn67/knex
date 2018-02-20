@@ -1,5 +1,6 @@
 import Promise from 'bluebird';
 import * as helpers from './helpers';
+import { getLogger } from './logger';
 
 import Raw from './raw';
 import Runner from './runner';
@@ -26,6 +27,7 @@ import { assign, uniqueId, cloneDeep, defaults } from 'lodash'
 const debug = require('debug')('knex:client')
 const debugQuery = require('debug')('knex:query')
 const debugBindings = require('debug')('knex:bindings')
+
 
 // The base client provides the general structure
 // for a dialect specific client object.
@@ -205,7 +207,7 @@ assign(Client.prototype, {
       'Promise'
     ].forEach(option => {
       if (option in poolConfig) {
-        helpers.warn([
+        getLogger().warn([
           `Pool config option "${option}" is no longer supported.`,
           `See https://github.com/Vincit/tarn.js for possible pool config options.`
         ].join(' '))
@@ -234,7 +236,7 @@ assign(Client.prototype, {
 
       destroy: (connection) => {
         if (poolConfig.beforeDestroy) {
-          helpers.warn(`
+          getLogger().warn(`
             beforeDestroy is deprecated, please open an issue if you use this
             to discuss alternative apis
           `)
@@ -249,7 +251,7 @@ assign(Client.prototype, {
 
       validate: (connection) => {
         if (connection.__knex__disposed) {
-          helpers.warn(`Connection Error: ${connection.__knex__disposed}`)
+          getLogger().warn(`Connection Error: ${connection.__knex__disposed}`)
           return false
         }
 
@@ -260,7 +262,7 @@ assign(Client.prototype, {
 
   initializePool(config) {
     if (this.pool) {
-      helpers.warn('The pool has already been initialized')
+      getLogger().warn('The pool has already been initialized')
       return
     }
 

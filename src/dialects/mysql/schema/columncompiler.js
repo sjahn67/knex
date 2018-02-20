@@ -3,7 +3,7 @@
 // -------
 import inherits from 'inherits';
 import ColumnCompiler from '../../../schema/columncompiler';
-import * as helpers from '../../../helpers';
+import { getLogger } from '../../../logger';
 
 import { assign } from 'lodash'
 
@@ -97,7 +97,7 @@ assign(ColumnCompiler_MySQL.prototype, {
 
   comment(comment) {
     if (comment && comment.length > 255) {
-      helpers.warn('Your comment is longer than the max comment length for MySQL')
+      getLogger().warn('Your comment is longer than the max comment length for MySQL')
     }
     return comment && `comment '${comment}'`
   },

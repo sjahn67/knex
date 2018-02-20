@@ -8,6 +8,7 @@ import { isUndefined, map, assign, defaults } from 'lodash'
 
 import Client from '../../client';
 import * as helpers from '../../helpers';
+import { getLogger } from '../../logger';
 
 import QueryCompiler from './query/compiler';
 import SchemaCompiler from './schema/compiler';
@@ -18,7 +19,7 @@ import SQLite3_DDL from './schema/ddl';
 function Client_SQLite3(config) {
   Client.call(this, config)
   if (isUndefined(config.useNullAsDefault)) {
-    helpers.warn(
+    getLogger().warn(
       'sqlite does not support inserting default values. Set the ' +
       '`useNullAsDefault` flag to hide this warning. ' +
       '(see docs http://knexjs.org/#Builder-insert).'
