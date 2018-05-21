@@ -96,6 +96,29 @@ assign(Client_MariaSQL.prototype, {
     });
   },
 
+  _formatQuery: function _formatQuery(sql, bindings, timeZone) {
+    var _this = this;
+
+    bindings = bindings == null ? [] : [].concat(bindings);
+    var index = 0;
+    return sql.replace(/\\?\?/g, function (match) {
+      if (match === '\\?') {
+        return '?';
+      }
+      if (index === bindings.length) {
+        return match;
+      }
+      var value = bindings[index++];
+
+      if ((typeof value === "string") && (value.length > 2) && value[0] === "X" && value[1] === "\'") {
+        return value;
+      } else {
+        return _this._escapeBinding(value, { timeZone: timeZone });
+      }
+    });
+  },
+
+
   // Process the response as returned from the query.
   processResponse(obj, runner) {
     const { response } = obj;
